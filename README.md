@@ -1,61 +1,86 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Hisar Global Dijital Platformu
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Hisar Global distribütörlük ve bayilik ağını yönetmek üzere tasarlanan bu proje, Laravel 12 tabanlı bir çok aşamalı içerik yönetim platformudur. Proje; marka, ürün, mağaza ve şehir bazlı içeriklerin tek merkezden yönetilmesini, dağıtım ve perakende kanallarının aynı çatı altında sunulmasını ve paylaşımlı hosting ortamlarına sorunsuz dağıtımı hedefler.
 
-## About Laravel
+## Özellikler
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Türkçe odaklı yapı**: Varsayılan yerelleştirme `tr`, Faker yereli `tr_TR` ve proje kimliği `.env` şablonunda hazır gelir.
+- **Bridge mimarisi**: Proje kökündeki `index.php`, tüm istekleri `public/` dizinine yönlendirerek paylaşımlı hosting senaryolarını destekler.
+- **Özel yapılandırma**: `config/hisar.php` dosyası üzerinden menü limitleri, mega menü yönlendirmesi, önbellek, marka teması, GA4 ve PWA renkleri yönetilir.
+- **Yükleme diski**: `public/uploads` dizini 0775 izinleriyle hazırdır ve `filesystems.php` içerisinde proje varsayılanları tanımlanmıştır.
+- **Güvenlik ve oturum yönetimi**: SetSecurityHeaders, SetLocale, CsrfTokenRotate ve AdminGuard middleware zincire eklenmiştir.
+- **Laravel ekosistem uyumu**: Composer/NPM komutları, Vite derleme altyapısı ve Artisan test komutları varsayılan olarak yapılandırılmıştır.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Gereksinimler
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP ^8.2 (intl, mbstring, openssl, pdo_mysql/pgsql, gd veya imagick önerilir)
+- Composer 2.x
+- Node.js 20+ ve npm/yarn (opsiyonel, Vite derlemeleri için)
+- MySQL 8+ veya PostgreSQL 14+
 
-## Learning Laravel
+## Kurulum (Yerel Geliştirme)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Depoyu klonlayın ve dizine girin:
+   git clone <repo-url>
+   cd AK_Genclik_Auto_Whatsapp_Sender
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. Bağımlılıkları yükleyin:
+   composer install
+   npm install # Vite kullanacaksanız
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. Ortam dosyasını oluşturun ve anahtar üretin:
+   cp .env.example .env
+   php artisan key:generate
 
-## Laravel Sponsors
+4. `.env` içindeki veritabanı ve uygulama ayarlarını aşağıdaki tabloya göre güncelleyin.
+5. Veritabanını hazırlayın (ilerleyen görevlerde migrasyonlar tamamlandığında):
+   php artisan migrate --seed
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+6. Geliştirme sunucusunu ve derleyicileri başlatın:
+   php artisan serve
+   npm run dev
 
-### Premium Partners
+## Ortam Değişkenleri
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+| Anahtar | Açıklama | Varsayılan |
+| --- | --- | --- |
+| APP_NAME | Uygulama adı | Hisar |
+| APP_URL | Yerel kök adres (bridge sayesinde alt klasör gerekmez) | http://127.0.0.1 |
+| APP_LOCALE | Uygulama yereli | tr |
+| DB_CONNECTION | mysql veya pgsql | mysql |
+| MENU_LIMIT_BRANDS | Mega menüde listelenecek marka sayısı | 10 |
+| MENU_LIMIT_STORES | Perakende açılır menü limiti | 10 |
+| MENU_LIMIT_PROJECTS | İnşaat açılır menü limiti | 10 |
+| MEGA_MENU_ORIENTATION | vertical veya horizontal | vertical |
+| CACHE_TTL_MIN | Menü/cache verileri için dakika bazlı TTL | 10 |
+| GA4_ID | Google Analytics 4 ölçüm kimliği | boş |
+| PWA_THEME_COLOR | Manifest tema rengi | #ED8B00 |
+| PWA_BG_COLOR | Manifest arka plan rengi | #ffffff |
+| UPLOAD_MAX_KB | Maksimum yükleme boyutu (KB) | 10240 |
+| UPLOAD_ALLOW_SVG | SVG yüklemelerini etkinleştirme (true/false) | false |
 
-## Contributing
+## Proje Yapısı
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- app/Http/Controllers/Front – Ön yüz için temel controller seti (ileriki görevlerde genişletilecek).
+- app/Http/Middleware – Güvenlik, yerelleştirme ve yönetici oturumunu yöneten özel middleware'ler.
+- config/hisar.php – Hisar Global'e özgü yapılandırma anahtarı.
+- public/ – Uygulama kökü, servis çalışanı, manifest ve varlık dosyalarının yer alacağı dizin.
+- resources/ – Blade şablonları, CSS ve JS kaynakları.
+- routes/web.php – Tüm rotalar controller metodlarına yönlenir; closure kullanılmaz.
 
-## Code of Conduct
+## Dağıtım Notları (Paylaşımlı Hosting)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Sunucu public/ dizinini kök olarak belirleyemiyorsa, kökteki index.php bridge dosyası ile yönlendirme yapılmalıdır.
+- Yerel ortamda üretilen vendor/, public/build, public/assets, public/icons ve boş public/uploads dizinleri ile birlikte yükleyin.
+- storage/app/backups ve storage/logs dizinlerinin yazılabilir olduğundan emin olun.
+- .env dosyasını üretim değerleriyle manuel olarak güncelleyin; MAIL_MAILER için SMTP önerilir, yoksa log kullanabilirsiniz.
+- Cache veya rota/konfigürasyon önbelleğini temizlemek için php artisan config:clear ve php artisan cache:clear komutlarını çalıştırın.
 
-## Security Vulnerabilities
+## Testler
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Projeyi doğrulamak için:
+php artisan test
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+İlerleyen görevlerde migrasyonlar, yönetim paneli ve ön yüz bileşenleri tamamlandıkça README güncellenmelidir.
