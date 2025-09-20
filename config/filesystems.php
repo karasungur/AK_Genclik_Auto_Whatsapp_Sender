@@ -32,8 +32,10 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root' => storage_path('app/private'),
+            'serve' => true,
             'throw' => false,
+            'report' => false,
         ],
 
         'public' => [
@@ -42,6 +44,7 @@ return [
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
+            'report' => false,
         ],
 
         'uploads' => [
@@ -60,6 +63,7 @@ return [
                     'private' => 0700,
                 ],
             ],
+            'report' => false,
         ],
 
         's3' => [
@@ -72,6 +76,7 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
+            'report' => false,
         ],
 
     ],
